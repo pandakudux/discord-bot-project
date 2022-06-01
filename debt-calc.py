@@ -1,9 +1,11 @@
 import os
+import sndhdr
 from googleapiclient.discovery import build
 
-############################
-# code from stack overflow #
-############################
+#####################################################################
+# code from stack overflow (with additions and modifications by me) #
+#####################################################################
+
 # function to return dict for 'add_data'
 # fields is a mask to return only certain values from the spreadsheet
 """ 
@@ -36,6 +38,7 @@ SHEETS: data, properties
 In other words, it returns only these attributes:
 effectiveFormat/backgroundColor, formattedValue, startColumn, startRow, sheetID, title
 """
+
 def get_sheet_colors(service, wbId: str, ranges: list):
     params = {'spreadsheetId': wbId,
               'ranges': ranges,
@@ -45,11 +48,10 @@ def get_sheet_colors(service, wbId: str, ranges: list):
 # declaration of service object
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="E:\\VSCode\\discord-bot-project\\discord-bot-352004-95d1d5f53a9d.json"
 service_obj = build('sheets', 'v4')
-
-spread_id = '1cWEmMLPJBN803RNeucffQcJglPTY9DS54wrYPCHcHE0'
+sheet_id = '1cWEmMLPJBN803RNeucffQcJglPTY9DS54wrYPCHcHE0'
 
 desiredA1NotationRanges = []
-all_data = get_sheet_colors(service_obj, spread_id, desiredA1NotationRanges)
+all_data = get_sheet_colors(service_obj, sheet_id, desiredA1NotationRanges)
 
 # close the service object
 service_obj.close()
@@ -74,6 +76,8 @@ for sheet in all_data['sheets']:
         rangeBGs = [default_bg] * offsets['row']
         rangeValues = [''] * offsets['row']
         for row in rowData:
+            # sentinel value to see if row is empty or not, becomes true if a single valid value is inserted
+            sentinel = False
             colData = row['values']
             newBGs = [default_bg] * offsets['col']
             newVals = [''] * offsets['col']
@@ -86,22 +90,50 @@ for sheet in all_data['sheets']:
                     newVals.append(col['formattedValue']) # Always a string if present.
                 except KeyError:
                     newVals.append('') # Not all cells have a value.
-            rangeBGs.append(newBGs)
-            rangeValues.append(newVals)
+                else:
+                    sentinel = True # sets sentinel to true if the row contains at least one value
+            # as long as the row has at least one value append bg and value list to dataset
+            if sentinel:
+                rangeBGs.append(newBGs)
+                rangeValues.append(newVals)
         dataset.append({'sheetId': sheet['properties']['sheetId'],
                         'sheetName': sheet['properties']['title'],
                         'backgrounds': rangeBGs,
                         'values': rangeValues})
 
+# BACKGROUND/VALUE [row][column]
 # dataset is now a list with elements that correspond to the requested ranges,
 # and contain 0-base row and column indexed arrays of the backgrounds and values.
 # One could add logic to pop elements from the ranges if the entire row has no values.
+#   ^^ added through the sentinel boolean variable ^^
 # Color in A1 of 1st range:
 
-# BACKGROUND/VALUE [row][column]
+
 r1 = dataset[0]
-print(f'Cell A1 color is {r1["backgrounds"][0][0]} and has value {r1["values"][0][0]}')
-print(f'Cell D2 color is {r1["backgrounds"][1][3]} and has value {r1["values"][1][3]}')
+# print(f'Cell A1 color is {r1["backgrounds"][0][0]} and has value {r1["values"][0][0]}')
+# print(f'Cell D2 color is {r1["backgrounds"][1][3]} and has value {r1["values"][1][3]}')
+# print(f'Cell A21 has color {r1["backgrounds"][19][0]} with value {r1["values"][19][0]}')
 ###################################
 # END OF CODE FROM STACK OVERFLOW #
 ###################################
+
+# loop through all rows (debts) and calculate the amount owed per person
+# this will be done using a nested dict structure of the style:
+# {
+# "Parker": {          
+#           "Logan": $x
+#           .
+#           .
+#           .
+#           "Thomas": $y     
+#           }
+#
+#  "Logan": {
+#           }
+# .
+# .
+# .
+#
+# "Thomas": {
+#           }
+# }
