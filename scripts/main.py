@@ -1,12 +1,10 @@
 # main file for gusefleyhead discord bot
-from email.errors import FirstHeaderLineIsContinuationDefect
-from pydoc import describe
 import discord
 from discord.ext import commands
 from debt_calc import calc_indv_debts
 
 # create the bot for the code to connect to the bot
-bot = commands.Bot(command_prefix='?')
+bot = commands.Bot(command_prefix='?', help_command=None)
 with open('E:\\VSCode\\discord-bot-project\\token.txt', 'r') as f:
     TOKEN = f.readline()
 
@@ -28,7 +26,7 @@ async def post_debts(ctx, *args):
         debtList = debts.keys()
     else:
         for person in args:
-            debtList.append(person)
+            debtList.append(person.capitalize())
 
     # creates and sends an embed for each person given in arguments or all of the people in the spreadsheet if no arguments are specified
     for person in debtList:
@@ -57,10 +55,14 @@ async def post_debts(ctx, *args):
         # prints the embed to the given channel
         await ctx.send(embed=embed)
 
-@bot.command(pass_context=True)
-async def test(ctx):
-    await ctx.send('bruh')
-    print("TEST")
+@bot.command()
+async def help(ctx):
+    await ctx.send('''```Command List:
+    ?debts *[list of names seperated by spaces]
+    ?help
+
+NOTE: arguments marked by an asterisk(*) are OPTIONAL
+```''')
 
 @bot.event
 async def on_ready():
