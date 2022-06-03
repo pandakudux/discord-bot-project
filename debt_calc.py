@@ -64,7 +64,7 @@ def get_info_arrs():
     for sheet in all_data['sheets']:
         # The sheet resource is a dict with keys determined by what we requested in fields
         # (i.e. properties (->sheetId, ->title), data)
-        print('Sheet name is {title} with grid id {sheetId}'.format_map(sheet["properties"]))
+        # print('Sheet name is {title} with grid id {sheetId}'.format_map(sheet["properties"]))
         # each range in data will only contain startRow and/or startColumn if they are not 0
         # (i.e. if you grab A1:___, you won't have startRow or startColumn)
         for range in sheet['data']:
@@ -180,4 +180,3 @@ def calc_indv_debts():
 
     # return final dict structure
     return debts
-

@@ -1,4 +1,6 @@
 # main file for gusefleyhead discord bot
+from email.errors import FirstHeaderLineIsContinuationDefect
+from pydoc import describe
 import discord
 from discord.ext import commands
 from debt_calc import calc_indv_debts
@@ -27,14 +29,29 @@ async def post_debts(ctx, *args):
         for person in args:
             debtList.append(person)
 
-    # creates and sends an embed for each person given in arguments or all of the people if no arguments are specified
+    # creates and sends an embed for each person given in arguments or all of the people in the spreadsheet if no arguments are specified
     for person in debtList:
-        embed = discord.Embed(title=f'{person}\'s debts', url='https://docs.google.com/spreadsheets/d/1cWEmMLPJBN803RNeucffQcJglPTY9DS54wrYPCHcHE0/edit#gid=0',description=f'The amount of money that {person} owes to each person in gusefleyhead')
+        # declaration of fields for the embed object
+        title = f'{person}\'s debts'
+        link = 'https://docs.google.com/spreadsheets/d/1cWEmMLPJBN803RNeucffQcJglPTY9DS54wrYPCHcHE0/edit#gid=0'
+        # modifies the color of the embed and the description based on if a debt exists or not
+        if debts[person]["Total"] == 0:
+            color = discord.Colour.green()
+            desc = f'Congrats! {person} is free of debts, for now...'
+        else:
+            color = discord.Colour.red()
+            desc = f'The amount of money {person} owes to people in gusefleyhead'
+
+        # creates the embed object with the fields created above and adds fields for each debt person owes
+        embed = discord.Embed(title=title, url=link, description=desc, color=color)
         for debt in debts[person].keys():
             if not debt == 'Total':
                 embed.add_field(name=f'{debt}', value=f'${debts[person][debt]}', inline=True)
+        # adds total value at the bottom of the embed which is seperated by a blank line
+        embed.add_field(name='\u200b', value='\u200b', inline=False)
         embed.add_field(name='Total', value=f'${debts[person]["Total"]}', inline=False)
-        # print the embed
+        
+        # prints the embed to the given channel
         await ctx.send(embed=embed)
 
 @bot.command(pass_context=True)
