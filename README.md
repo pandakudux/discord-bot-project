@@ -17,5 +17,9 @@ Displays the list of commands this bot has.
 ### ?debts *[optional list of names]*
 Scrapes a certain google sheets spreadsheet and displays any money each individual may owe another.\
 By default, all debts will be returned, an optional space delimited list of names can be included with the command to return only those indivual's debts.
+> \**all names changed for privacy reasons*\
+> ex. ?debts\
+> ![Example of ?debts default functionality](/assets/debts_default_functionality.png)\
 > ex. ?debts John Panda Joe\
-> This will return only the debts that John, Panda, and Joe owe.
+> ![Example of ?debts with a list of names](/assets/debts_extended_functionality.png)\
+
