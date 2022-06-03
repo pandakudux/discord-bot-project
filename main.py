@@ -35,7 +35,8 @@ async def post_debts(ctx, *args):
         title = f'{person}\'s debts'
         link = 'https://docs.google.com/spreadsheets/d/1cWEmMLPJBN803RNeucffQcJglPTY9DS54wrYPCHcHE0/edit#gid=0'
         # modifies the color of the embed and the description based on if a debt exists or not
-        if debts[person]["Total"] == 0:
+        total = debts[person]["Total"]
+        if total == 0:
             color = discord.Colour.green()
             desc = f'Congrats! {person} is free of debts, for now...'
         else:
@@ -49,8 +50,9 @@ async def post_debts(ctx, *args):
                 embed.add_field(name=f'{debt}', value=f'${debts[person][debt]}', inline=True)
         # adds total value at the bottom of the embed which is seperated by a blank line
         embed.add_field(name='\u200b', value='\u200b', inline=False)
-        embed.add_field(name='Total', value=f'${debts[person]["Total"]}', inline=False)
-        
+        embed.add_field(name='Total', value=f'${total}', inline=False)
+        if not total == 0:
+            embed.set_footer(text='Don\'t forget to mark debts as payed in the spreadsheet!')
         # prints the embed to the given channel
         await ctx.send(embed=embed)
 
