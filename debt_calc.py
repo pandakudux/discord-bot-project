@@ -46,7 +46,7 @@ def get_sheet_colors(service, wbId: str, ranges: list):
 
 def get_info_arrs():
     # declaration of service object
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="E:\\VSCode\\discord-bot-project\\discord-bot-352004-95d1d5f53a9d.json"
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="E:\\VSCode\\discord-bot-project\\sheet_service_acc.json"
     service_obj = build('sheets', 'v4')
     sheet_id = '1cWEmMLPJBN803RNeucffQcJglPTY9DS54wrYPCHcHE0'
 
