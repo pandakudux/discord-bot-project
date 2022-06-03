@@ -1,5 +1,5 @@
 # discord-bot-project
-Discord project I created to keep track of information for a personal server. 
+A discord bot I created to keep track of information for a personal server. 
 
 ## Using this bot
 >NOTE: This bot is not meant for use outside of the personal enviornment I created it in.
