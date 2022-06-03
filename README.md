@@ -14,6 +14,9 @@ Currently, this bot only has functionality for the following commands:
 ### ?help
 Displays the list of commands this bot has.
 
+> ex. ?help\
+> ![Example of ?help functionality](/assets/help_functionality.png)
+
 ### ?debts *[optional list of names]*
 Scrapes a certain google sheets spreadsheet and displays any money each individual may owe another.\
 By default, all debts will be returned, an optional space delimited list of names can be included with the command to return only those indivual's debts.
