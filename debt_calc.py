@@ -46,6 +46,8 @@ def get_sheet_colors(service, wbId: str, ranges: list):
 
 def get_info_arrs():
     # declaration of service object
+    # NOTE: THIS SPECIFIC FILE AND SHEET ID ARE FOR THIS PROJECT ONLY, BE SURE TO UPDATE WHEN USING ELSEWHERE
+    #       KEYS CAN BE ACQUIRED AT THE GOOGLE DEVELOPER PORTAL AND SHEET ID'S FOUND ON SHEET URL
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="E:\\VSCode\\discord-bot-project\\sheet_service_acc.json"
     service_obj = build('sheets', 'v4')
     sheet_id = '1cWEmMLPJBN803RNeucffQcJglPTY9DS54wrYPCHcHE0'

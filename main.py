@@ -7,7 +7,8 @@ from debt_calc import calc_indv_debts
 
 # create the bot for the code to connect to the bot
 bot = commands.Bot(command_prefix='?')
-TOKEN = 'OTgyMzQyNjc2ODU2ODUyNDgx.G-HNfq.ck0swfBlgYsKOrKEiZ0QE1gb-3OSS_HfuDtN8w'
+with open('E:\\VSCode\\discord-bot-project\\token.txt', 'r') as f:
+    TOKEN = f.readline()
 
 # Command to calculate and display debts using embeds
 # command defined using the commands extension of discord
